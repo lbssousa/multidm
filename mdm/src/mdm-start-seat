@@ -264,6 +264,7 @@ while (( 1 )); do
 
     #log --log-file-only "Configuring devices..."
     echo -e "\n--"
+	echo "Hello, now is $(date)."
     echo "Configuring seat:"
 
     echo "  selecting keyboard"

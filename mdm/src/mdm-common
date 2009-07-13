@@ -51,6 +51,7 @@ function log() {
     #echo "MY_LOG = $MY_LOG $1 $2"
     if [ "$1" == '--log-file-only' ]; then
         echo "$ME: $2" >> $MY_LOG
+        echo "$(date)" >> $MY_LOG 
     else
         echo "$ME: $1" >> $MY_LOG
         echo "$ME: $1"
