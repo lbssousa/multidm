@@ -101,6 +101,7 @@ function parse_config_file () {
 
 function select_keyboard () {
     if [ -e "${MDM_DEVICES}/keyboard${SEAT_DISPLAY}" ]; then
+    KEYBOARD="$MDM_DEVICES/keyboard${SEAT_DISPLAY}"
 	return
     fi
 
@@ -163,6 +164,7 @@ function select_keyboard () {
 
 function select_mouse () {
     if [ -e "${MDM_DEVICES}/mouse${SEAT_DISPLAY}" ]; then
+    MOUSE="${MDM_DEVICES}/mouse${SEAT_DISPLAY}"
 	return
     fi
 
