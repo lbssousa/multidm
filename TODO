@@ -22,7 +22,6 @@ Structural changes:
 Easy/small tasks:
 
 - Stop printing needless sections of xorg.conf
-- When modes print their Xephyr arguments, they lie
 - Verify the bugs reported with RECONFIGURE_INPUT='no'
 - Verify the bugs reported with video resolution (xrandr not respecting
   mdm.conf)
