@@ -22,9 +22,6 @@ Structural changes:
 Easy/small tasks:
 
 - Stop printing needless sections of xorg.conf
-- Verify the bugs reported with RECONFIGURE_INPUT='no'
-- Verify the bugs reported with video resolution (xrandr not respecting
-  mdm.conf)
 - Verify the possible bugs with drivers that use older xrandr versions
 - Do some sanity checks in mdm (check mdm.conf's syntax, quit if no mode is
   present, etc)
