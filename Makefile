@@ -1,5 +1,7 @@
 # XXX This will soon be replaced by cool autostuff
 
+# If DESTDIR wasn't set, set it now as /
+DESTDIR ?= /
 all:
 	cd mdm && make
 	cd extra-modes/xephyr-gdm && make
