@@ -203,7 +203,6 @@ case "$1" in
                 log_end_msg 1
             fi
         else
-	    echo "caiu no else do if start_server"
             # Either we could not start it
             log_end_msg 1
         fi
