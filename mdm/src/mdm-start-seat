@@ -64,7 +64,7 @@ function open_seat_parent_window () {
 
 function display_message () {
     case $1 in
-        key_press)
+	key_press)
 	    $WRITE_MESSAGE $SEAT_WINDOW_ID $"Press the F$2 key" 1>&2
 	    ;;
 	button_press)
@@ -92,8 +92,9 @@ function parse_config_file () {
     else
         MY_XKB_LAYOUT=$DEFAULT_XKB_LAYOUT
     fi
-    if [ ! -z ${MODE[SEAT_NUMBER]} ]; then
-        MY_SCREEN_SIZE=${MODE[VIDEO_CARD_NUMBER]}
+
+    if [ ! -z ${MODE[SEAT_DISPLAY]} ]; then
+        MY_SCREEN_SIZE=${MODE[SEAT_DISPLAY]}
     else
         MY_SCREEN_SIZE=$DEFAULT_MODE
     fi
@@ -120,7 +121,7 @@ function select_keyboard () {
 	    KEYBOARDS=$(sed "s#$i##g" <<< $KEYBOARDS)
 	done
 	#echo "    ... after removing: Keyboards = $KEYBOARDS" 1>&2
-	
+
 	if [ -z "$KEYBOARDS" ]; then
 	    # No keyboards. Hopefully someone will connect one.
 	    sleep 1 # Don't use 100% CPU
@@ -172,13 +173,13 @@ function select_mouse () {
     while (( ! CREATED )); do
 	# Who are the mice?
 	MICE=$($DISCOVER_DEVICES mevdev | cut -f2)
-	
+
 	REMOVE=$(stat -c %N ${MDM_DEVICES}/mouse* 2> /dev/null|
 	         cut -d'`' -f3 | cut -d"'" -f1)
 	for i in ${REMOVE}; do
 	    MICE=$(sed "s#$i##g" <<< $MICE)
 	done
-	
+
 	if [ -z "$MICE" ]; then
 	    # No mice. Hopefully someone will connect one.
 	    sleep 1 # Don't use 100% CPU
@@ -274,7 +275,7 @@ while (( 1 )); do
 
     echo "  starting seat"
     display_manager_start_seat
-    
+
     display_message reconfigure
 
     PRESSED=$($READ_DEVICES 14 $KEYBOARD | grep '^detect' | cut -d'|' -f2)
