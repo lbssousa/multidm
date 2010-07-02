@@ -189,21 +189,23 @@ Section \"Screen\"
 	DefaultDepth	24
 	SubSection	\"Display\"
 		Depth	16
-		Modes	\"${SCREEN_SIZE}\"
-        # Testing if we really need a VIRTUAL SIZE for Screen
-        if [[ $VIRTUAL_X > ${SCREEN_SIZE/x*/} ]]; then
-                echo -e "\tVirtual $VIRTUAL_X $VIRTUAL_Y" >> $MDM_XORG_CONF
-        fi
+		Modes	\"${SCREEN_SIZE}\"" >> $MDM_XORG_CONF
+# Testing if we really need a VIRTUAL SIZE for Screen
+if [[ $VIRTUAL_X > ${SCREEN_SIZE/x*/} ]]; then
+        echo -e "\tVirtual $VIRTUAL_X $VIRTUAL_Y" >> $MDM_XORG_CONF
+fi
 
+echo -e "
 	EndSubSection
 	SubSection	\"Display\"
 		Depth	24
-		Modes	\"${SCREEN_SIZE}\"
-        # Testing if we really need a VIRTUAL SIZE for Screen
-        if [[ $VIRTUAL_X > ${SCREEN_SIZE/x*/} ]]; then
-                echo -e "\tVirtual  $VIRTUAL_X $VIRTUAL_Y" >> $MDM_XORG_CONF
-        fi
+		Modes	\"${SCREEN_SIZE}\"" >> $MDM_XORG_CONF
+# Testing if we really need a VIRTUAL SIZE for Screen
+if [[ $VIRTUAL_X > ${SCREEN_SIZE/x*/} ]]; then
+        echo -e "\tVirtual  $VIRTUAL_X $VIRTUAL_Y" >> $MDM_XORG_CONF
+fi
 
+echo -e "
 	EndSubSection
 EndSection" >> $MDM_XORG_CONF
 }
