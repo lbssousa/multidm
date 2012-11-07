@@ -59,11 +59,11 @@ FlexibleXServers=0
 0=inactive
 
 [server-XNotHandled]
-command=/usr/bin/X -config /etc/mdm/xorg.conf.mdm -noreset
+command=/usr/bin/X -config /etc/multidm/xorg.conf.multidm -noreset
 flexible=false
 handled=false
 
 [server-XHandled]
-command=/usr/bin/X -config /etc/mdm/xorg.conf.mdm
+command=/usr/bin/X -config /etc/multidm/xorg.conf.multidm
 flexible=false
 handled=true

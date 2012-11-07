@@ -20,27 +20,27 @@
 
 set -e
 
-# XXX This is uglier than ../../mdm/misc/make-tree.sh
+# XXX This is uglier than ../../multidm/misc/make-tree.sh
 
 TARGET=tree/
 BASE_DIR=/
 
-MDM_SHARE=$BASE_DIR/usr/share/mdm/
+MULTIDM_SHARE=$BASE_DIR/usr/share/multidm/
 
-MDM_MODES=$MDM_SHARE/modes/
+MULTIDM_MODES=$MULTIDM_SHARE/modes/
 
 GDM_CONF=/etc/gdm/
 
 rm -rf   $TARGET
 mkdir -p $TARGET
 
-mkdir -p $TARGET/$MDM_SHARE
+mkdir -p $TARGET/$MULTIDM_SHARE
 
-mkdir -p $TARGET/$MDM_MODES
+mkdir -p $TARGET/$MULTIDM_MODES
 
 mkdir -p $TARGET/$GDM_CONF
 
-cp src/xephyr-gdm		    $TARGET/$MDM_MODES/
+cp src/xephyr-gdm		    $TARGET/$MULTIDM_MODES/
 
 # Yes, 2 files.
 cp gdm-config/gdm.conf-custom	$TARGET/$GDM_CONF/

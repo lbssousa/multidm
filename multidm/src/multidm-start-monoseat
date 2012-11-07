@@ -21,9 +21,9 @@
 # This script calls the display_manager_start_monoseat function
 # because it needs a new PID to allow the init process continue
 
-MDM_PREFIX=/
-MDM_SCRIPTS=${MDM_PREFIX}/usr/sbin
-MDM_INCLUDE=${MDM_SCRIPTS}/mdm-common
-source $MDM_INCLUDE
+MULTIDM_PREFIX=/
+MULTIDM_SCRIPTS=${MULTIDM_PREFIX}/usr/sbin
+MULTIDM_INCLUDE=${MULTIDM_SCRIPTS}/multidm-common
+source $MULTIDM_INCLUDE
 
 display_manager_start_monoseat

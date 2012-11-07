@@ -27,35 +27,35 @@
 
 # We assume $DISPLAY is already set here
 
-MDM_PREFIX=/
-MDM_SCRIPTS=${MDM_PREFIX}/usr/sbin
-MDM_INCLUDE=${MDM_SCRIPTS}/mdm-common
-source $MDM_INCLUDE
+MULTIDM_PREFIX=/
+MULTIDM_SCRIPTS=${MULTIDM_PREFIX}/usr/sbin
+MULTIDM_INCLUDE=${MULTIDM_SCRIPTS}/multidm-common
+source $MULTIDM_INCLUDE
 
-READ_DEVICES=${MDM_SCRIPTS}/read-devices
-WRITE_MESSAGE=${MDM_SCRIPTS}/write-message
-SEAT_PARENT_WINDOW=${MDM_SCRIPTS}/seat-parent-window
+READ_DEVICES=${MULTIDM_SCRIPTS}/read-devices
+WRITE_MESSAGE=${MULTIDM_SCRIPTS}/write-message
+SEAT_PARENT_WINDOW=${MULTIDM_SCRIPTS}/seat-parent-window
 
 VIDEO_CARD_NUMBER=$1
 SEAT_DISPLAY=$2
 
-TEXTDOMAINDIR=${MDM_LOCALE}
-TEXTDOMAIN=mdm
+TEXTDOMAINDIR=${MULTIDM_LOCALE}
+TEXTDOMAIN=multidm
 
-#MY_LOG=$MDM_LOGS/mdm-start-seat.${VIDEO_CARD_NUMBER}.log
+#MY_LOG=$MULTIDM_LOGS/multidm-start-seat.${VIDEO_CARD_NUMBER}.log
 
 function open_seat_parent_window () {
     # The first parameter given to this function must be [width]*n, where n is
     # a multiplier that gives the coordinates to correctly open
     # seat_parent_window. This number is also used on names of files.
-    if [ -f "${MDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid" ]; then
-        kill `cat ${MDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid` 2> /dev/null
-        rm -f ${MDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid 2> /dev/null
+    if [ -f "${MULTIDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid" ]; then
+        kill `cat ${MULTIDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid` 2> /dev/null
+        rm -f ${MULTIDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid 2> /dev/null
     fi
 
     $SEAT_PARENT_WINDOW $MY_SCREEN_SIZE+$1+0 seat-parent-window$DISPLAY-$1 &
     PID=$!
-    echo $PID > ${MDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid
+    echo $PID > ${MULTIDM_PIDS}/seat-parent-window${DISPLAY}-$1.pid
 
     SEAT_WINDOW_ID=$(xwininfo -name "seat-parent-window${DISPLAY}-$1"   |
                         grep "Window id" | cut -d' ' -f4)
@@ -101,8 +101,8 @@ function parse_config_file () {
 }
 
 function select_keyboard () {
-    if [ -e "${MDM_DEVICES}/keyboard${SEAT_DISPLAY}" ]; then
-    KEYBOARD="$MDM_DEVICES/keyboard${SEAT_DISPLAY}"
+    if [ -e "${MULTIDM_DEVICES}/keyboard${SEAT_DISPLAY}" ]; then
+    KEYBOARD="$MULTIDM_DEVICES/keyboard${SEAT_DISPLAY}"
 	return
     fi
 
@@ -115,7 +115,7 @@ function select_keyboard () {
 	#echo "    Keyboards = $KEYBOARDS" 1>&2
 
 	# Remove used keyboards
-	REMOVE=$(stat -c %N $MDM_DEVICES/keyboard* 2> /dev/null|
+	REMOVE=$(stat -c %N $MULTIDM_DEVICES/keyboard* 2> /dev/null|
 	         cut -d'`' -f3 | cut -d"'" -f1)
 	for i in ${REMOVE}; do
 	    KEYBOARDS=$(sed "s#$i##g" <<< $KEYBOARDS)
@@ -141,31 +141,31 @@ function select_keyboard () {
 	fi
 
 	# Ok, someone pressed the key
-	ln -sf $PRESSED $MDM_DEVICES/keyboard${SEAT_DISPLAY}
+	ln -sf $PRESSED $MULTIDM_DEVICES/keyboard${SEAT_DISPLAY}
 	CREATED=1
 
-	# Verify is there is already another link in $MDM_DEVICES/keyboard* that
+	# Verify is there is already another link in $MULTIDM_DEVICES/keyboard* that
 	# points to the device. If there is, erase the one I created and
 	# continue looping
-	for i in `ls $MDM_DEVICES | grep "\<keyboard"`; do
+	for i in `ls $MULTIDM_DEVICES | grep "\<keyboard"`; do
 	    if [ "$i" != "keyboard${SEAT_DISPLAY}" ]; then
-		AUX=$(stat -c %N $MDM_DEVICES/$i| cut -d'`' -f3| cut -d"'" -f1)
+		AUX=$(stat -c %N $MULTIDM_DEVICES/$i| cut -d'`' -f3| cut -d"'" -f1)
 		if [ "$AUX" = "$PRESSED" ]; then
 		    # Keyboard link already exists...
-		    rm -f $MDM_DEVICES/keyboard${SEAT_DISPLAY}
+		    rm -f $MULTIDM_DEVICES/keyboard${SEAT_DISPLAY}
 		    CREATED=0
 		fi
 	    fi
 	done
     done
 
-    KEYBOARD="$MDM_DEVICES/keyboard${SEAT_DISPLAY}"
+    KEYBOARD="$MULTIDM_DEVICES/keyboard${SEAT_DISPLAY}"
 
 }
 
 function select_mouse () {
-    if [ -e "${MDM_DEVICES}/mouse${SEAT_DISPLAY}" ]; then
-    MOUSE="${MDM_DEVICES}/mouse${SEAT_DISPLAY}"
+    if [ -e "${MULTIDM_DEVICES}/mouse${SEAT_DISPLAY}" ]; then
+    MOUSE="${MULTIDM_DEVICES}/mouse${SEAT_DISPLAY}"
 	return
     fi
 
@@ -174,7 +174,7 @@ function select_mouse () {
 	# Who are the mice?
 	MICE=$($DISCOVER_DEVICES mevdev | cut -f2)
 
-	REMOVE=$(stat -c %N ${MDM_DEVICES}/mouse* 2> /dev/null|
+	REMOVE=$(stat -c %N ${MULTIDM_DEVICES}/mouse* 2> /dev/null|
 	         cut -d'`' -f3 | cut -d"'" -f1)
 	for i in ${REMOVE}; do
 	    MICE=$(sed "s#$i##g" <<< $MICE)
@@ -189,9 +189,9 @@ function select_mouse () {
 	# Create the lock
 	LOCK_EXISTS=1
 	while (( LOCK_EXISTS )); do
-	    touch ${MDM_DEVICES}/lock${SEAT_DISPLAY}
+	    touch ${MULTIDM_DEVICES}/lock${SEAT_DISPLAY}
 	    LOCK_EXISTS=0
-	    for i in `ls $MDM_DEVICES | grep "\<lock"`; do
+	    for i in `ls $MULTIDM_DEVICES | grep "\<lock"`; do
 		if [ "$i" != "lock${SEAT_DISPLAY}" ]; then
 		    LOCK_EXISTS=1
 		fi
@@ -199,7 +199,7 @@ function select_mouse () {
 	    if (( LOCK_EXISTS )); then
 		# Yes, we'll call this lots of times...
 		display_message wait
-		rm -f ${MDM_DEVICES}/lock${SEAT_DISPLAY}
+		rm -f ${MULTIDM_DEVICES}/lock${SEAT_DISPLAY}
 		sleep 1;
 	    fi
 	done
@@ -212,39 +212,39 @@ function select_mouse () {
 
 	if [ -z "$PRESSED" ]; then
 	    # If $READ_DEVICES gets killed, don't do unwanted stuff
-	    rm -f ${MDM_DEVICES}/lock${SEAT_DISPLAY}
+	    rm -f ${MULTIDM_DEVICES}/lock${SEAT_DISPLAY}
 	    continue
 	fi
 	if [ "$PRESSED" = 'timeout' ]; then
 	    # Wait 5 seconds to give other machines the opportunity to enter the
 	    # lock
 	    display_message wait
-	    rm -f ${MDM_DEVICES}/lock${SEAT_DISPLAY}
+	    rm -f ${MULTIDM_DEVICES}/lock${SEAT_DISPLAY}
 	    sleep 5
 	    continue
 	fi
 
 	# Ok, someone pressed the key
-	ln -sf $PRESSED ${MDM_DEVICES}/mouse${SEAT_DISPLAY}
+	ln -sf $PRESSED ${MULTIDM_DEVICES}/mouse${SEAT_DISPLAY}
 	CREATED=1
 
-	# Verify is there is already another link in $MDM_DEVICES/mouse* that
+	# Verify is there is already another link in $MULTIDM_DEVICES/mouse* that
 	# points to the device. If there is, erase the one I created and
 	# continue looping
-	for i in `ls $MDM_DEVICES | grep "\<mouse"`; do
+	for i in `ls $MULTIDM_DEVICES | grep "\<mouse"`; do
 	    if [ "$i" != "mouse${SEAT_DISPLAY}" ]; then
-		AUX=$(stat -c %N ${MDM_DEVICES}/$i| cut -d'`' -f3|cut -d"'" -f1)
+		AUX=$(stat -c %N ${MULTIDM_DEVICES}/$i| cut -d'`' -f3|cut -d"'" -f1)
 		if [ "$AUX" = "$PRESSED" ]; then
 		    # Mouse link already exists...
-		    rm -f ${MDM_DEVICES}/mouse${SEAT_DISPLAY}
+		    rm -f ${MULTIDM_DEVICES}/mouse${SEAT_DISPLAY}
 		    CREATED=0
 		fi
 	    fi
 	done
-	rm -f ${MDM_DEVICES}/lock${SEAT_DISPLAY}
+	rm -f ${MULTIDM_DEVICES}/lock${SEAT_DISPLAY}
     done
 
-    MOUSE="${MDM_DEVICES}/mouse${SEAT_DISPLAY}"
+    MOUSE="${MULTIDM_DEVICES}/mouse${SEAT_DISPLAY}"
 }
 
 parse_config_file

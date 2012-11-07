@@ -20,55 +20,55 @@
 
 set -e
 
-# XXX: get these from mdm-common
+# XXX: get these from multidm-common
 
 TARGET=tree/
 BASE_DIR=/
 
-MDM_LOGS=$BASE_DIR/var/log/mdm/
-MDM_ETC=$BASE_DIR/etc/mdm/
-MDM_SHARE=$BASE_DIR/usr/share/mdm/
-MDM_SCRIPTS=$BASE_DIR/usr/sbin/
-MDM_LOCALE=$BASE_DIR/usr/share/locale/
+MULTIDM_LOGS=$BASE_DIR/var/log/multidm/
+MULTIDM_ETC=$BASE_DIR/etc/multidm/
+MULTIDM_SHARE=$BASE_DIR/usr/share/multidm/
+MULTIDM_SCRIPTS=$BASE_DIR/usr/sbin/
+MULTIDM_LOCALE=$BASE_DIR/usr/share/locale/
 
-CONFIG_FILE=$MDM_ETC/mdm.conf
+CONFIG_FILE=$MULTIDM_ETC/multidm.conf
 
-MDM_DEVICES=$MDM_ETC/devices/
-MDM_MODES=$MDM_SHARE/modes/
+MULTIDM_DEVICES=$MULTIDM_ETC/devices/
+MULTIDM_MODES=$MULTIDM_SHARE/modes/
 
 INITD=/etc/init.d
 
 rm -rf   $TARGET
 mkdir -p $TARGET
 
-mkdir -p $TARGET/$MDM_LOGS
-mkdir -p $TARGET/$MDM_ETC
-mkdir -p $TARGET/$MDM_SHARE
-mkdir -p $TARGET/$MDM_SCRIPTS
+mkdir -p $TARGET/$MULTIDM_LOGS
+mkdir -p $TARGET/$MULTIDM_ETC
+mkdir -p $TARGET/$MULTIDM_SHARE
+mkdir -p $TARGET/$MULTIDM_SCRIPTS
 
-mkdir -p $TARGET/$MDM_DEVICES
+mkdir -p $TARGET/$MULTIDM_DEVICES
 
 mkdir -p   $TARGET/$INITD
-cp src/mdm $TARGET/$INITD
+cp src/multidm $TARGET/$INITD
 
-cp src/mdm-bin                  $TARGET/$MDM_SCRIPTS/
-cp src/mdm-common               $TARGET/$MDM_SCRIPTS/
-cp src/mdm-start-seat           $TARGET/$MDM_SCRIPTS/
-cp src/create-xorg-conf         $TARGET/$MDM_SCRIPTS/
-cp src/xrandr-functions         $TARGET/$MDM_SCRIPTS/
-cp src/write-message            $TARGET/$MDM_SCRIPTS/
-cp src/xephyr-wrapper           $TARGET/$MDM_SCRIPTS/
-cp src/seat-parent-window       $TARGET/$MDM_SCRIPTS/
-cp src/read-devices             $TARGET/$MDM_SCRIPTS/
-cp src/discover-devices         $TARGET/$MDM_SCRIPTS/
-cp src/mdm-start-monoseat       $TARGET/$MDM_SCRIPTS/
-cp -r modes                     $TARGET/$MDM_SHARE/
-cp config/mdm.conf              $TARGET/$MDM_ETC/
+cp src/multidm-bin                  $TARGET/$MULTIDM_SCRIPTS/
+cp src/multidm-common               $TARGET/$MULTIDM_SCRIPTS/
+cp src/multidm-start-seat           $TARGET/$MULTIDM_SCRIPTS/
+cp src/create-xorg-conf         $TARGET/$MULTIDM_SCRIPTS/
+cp src/xrandr-functions         $TARGET/$MULTIDM_SCRIPTS/
+cp src/write-message            $TARGET/$MULTIDM_SCRIPTS/
+cp src/xephyr-wrapper           $TARGET/$MULTIDM_SCRIPTS/
+cp src/seat-parent-window       $TARGET/$MULTIDM_SCRIPTS/
+cp src/read-devices             $TARGET/$MULTIDM_SCRIPTS/
+cp src/discover-devices         $TARGET/$MULTIDM_SCRIPTS/
+cp src/multidm-start-monoseat       $TARGET/$MULTIDM_SCRIPTS/
+cp -r modes                     $TARGET/$MULTIDM_SHARE/
+cp config/multidm.conf              $TARGET/$MULTIDM_ETC/
 
 #Creating and moving .mo files to their directory.
 
 for LANGUAGE in $(ls po/*.po | cut -d'/' -f2 | cut -d'.' -f1); do
 
-        mkdir -p $TARGET/$MDM_LOCALE/$LANGUAGE/LC_MESSAGES/
-        cp po/$LANGUAGE.mo $TARGET/$MDM_LOCALE/$LANGUAGE/LC_MESSAGES/mdm.mo
+        mkdir -p $TARGET/$MULTIDM_LOCALE/$LANGUAGE/LC_MESSAGES/
+        cp po/$LANGUAGE.mo $TARGET/$MULTIDM_LOCALE/$LANGUAGE/LC_MESSAGES/multidm.mo
 done

@@ -21,26 +21,26 @@
 # This is the file that is included by everyone. It should cointain all the
 # variables that are common to every function.
 
-MDM_VERSION='0.0.3'
+MULTIDM_VERSION='0.0.3'
 
-MDM_PREFIX=/
+MULTIDM_PREFIX=/
 
-MDM_LOGS=$MDM_PREFIX/var/log/mdm/
-MDM_RUN=$MDM_PREFIX/var/run/mdm/
-MDM_ETC=$MDM_PREFIX/etc/mdm/
-MDM_SHARE=$MDM_PREFIX/usr/share/mdm/
-MDM_SCRIPTS=$MDM_PREFIX/usr/sbin/
-MDM_LOCALE=$MDM_PREFIX/usr/share/locale/
+MULTIDM_LOGS=$MULTIDM_PREFIX/var/log/multidm/
+MULTIDM_RUN=$MULTIDM_PREFIX/var/run/multidm/
+MULTIDM_ETC=$MULTIDM_PREFIX/etc/multidm/
+MULTIDM_SHARE=$MULTIDM_PREFIX/usr/share/multidm/
+MULTIDM_SCRIPTS=$MULTIDM_PREFIX/usr/sbin/
+MULTIDM_LOCALE=$MULTIDM_PREFIX/usr/share/locale/
 
-CONFIG_FILE=$MDM_ETC/mdm.conf
+CONFIG_FILE=$MULTIDM_ETC/multidm.conf
 
-MDM_DEVICES=$MDM_ETC/devices/
-MDM_MODES=$MDM_SHARE/modes/
-MDM_PIDS=$MDM_RUN/
+MULTIDM_DEVICES=$MULTIDM_ETC/devices/
+MULTIDM_MODES=$MULTIDM_SHARE/modes/
+MULTIDM_PIDS=$MULTIDM_RUN/
 
-MDM_XORG_CONF=$MDM_ETC/xorg.conf.mdm
-DISCOVER_DEVICES=$MDM_SCRIPTS/discover-devices
-XRANDR_FUNCTIONS=$MDM_SCRIPTS/xrandr-functions
+MULTIDM_XORG_CONF=$MULTIDM_ETC/xorg.conf.multidm
+DISCOVER_DEVICES=$MULTIDM_SCRIPTS/discover-devices
+XRANDR_FUNCTIONS=$MULTIDM_SCRIPTS/xrandr-functions
 
 source $XRANDR_FUNCTIONS
 
@@ -77,7 +77,7 @@ function rotate_log () {
 }
 
 function select_display_manager () {
-    source $MDM_MODES/$MULTISEAT_MODE
+    source $MULTIDM_MODES/$MULTISEAT_MODE
 }
 
 function rkill()

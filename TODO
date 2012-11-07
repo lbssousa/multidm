@@ -9,10 +9,10 @@ Paulo:  making this list smaller
 -------------------
 Structural changes:
 
-- Ensure that mode-dependent code is outside mdm-core
-- Remove 'xrandr-functions' from mdm-core
-- Rename the inner 'mdm' directory to 'mdm-core' or 'core'
-- Completly remove modes form 'mdm-core' (no more 'default modes')
+- Ensure that mode-dependent code is outside multidm-core
+- Remove 'xrandr-functions' from multidm-core
+- Rename the inner 'multidm' directory to 'multidm-core' or 'core'
+- Completly remove modes form 'multidm-core' (no more 'default modes')
 - Make an 'utils' dir for mode-dependent scripts that can be part of more than
   one mode
 - Create a mode that uses multiple X servers. That will probably break some
@@ -23,13 +23,13 @@ Easy/small tasks:
 
 - Stop printing needless sections of xorg.conf
 - Verify the possible bugs with drivers that use older xrandr versions
-- Do some sanity checks in mdm (check mdm.conf's syntax, quit if no mode is
+- Do some sanity checks in multidm (check multidm.conf's syntax, quit if no mode is
   present, etc)
 - Document our dependencies (building and using). Should we add a script to
   detect them?
 - Should we install the init.d script with make install?
 - Fix init.d's 'Should-Start' (read the comments inside the code)
-- Rename 'mdm-bin' to mdm and move the init.d script elsewhere
+- Rename 'multidm-bin' to multidm and move the init.d script elsewhere
 - Update copyright to 2008 (and 2009)?
 - Add a script to make tarball releasess?
 - Update our template mode

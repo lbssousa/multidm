@@ -20,7 +20,7 @@
 
 # This configuration runs Xephyr on gdm, using gdmdynamic
 
-XEPHYR_WRAPPER=${MDM_SCRIPTS}/xephyr-wrapper
+XEPHYR_WRAPPER=${MULTIDM_SCRIPTS}/xephyr-wrapper
 
 RETRIES=2
 SLEEP=1
@@ -78,7 +78,7 @@ function display_manager_start_seat () {
     # In case of multiseat with Xephyr, this function starts the Xephyrs and
     # puts the login screens on them.
     # We assume $DISPLAY is already set here.
-    # This function is called by mdm-start-seat, which gives you variables:
+    # This function is called by multidm-start-seat, which gives you variables:
     #   - $KEYBOARD and $MOUSE, which point to evdev device nodes.
     #   - $SEAT_DISPLAY variable corresponds to the number that the user will
     #     have to press on the keyboard. Might be useful here.

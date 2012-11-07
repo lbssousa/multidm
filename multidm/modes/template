@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-# This is the template file for the mdm modes
+# This is the template file for the multidm modes
 
 function display_manager_init () {
     # This function should stop running processes, remove logs, links, locks, or
@@ -46,7 +46,7 @@ function display_manager_start_seat () {
     # In case of multiseat with Xephyr, this function starts the Xephyrs and
     # puts the login screens on them.
     # We assume $DISPLAY is already set here.
-    # This function is called by mdm-start-seat, which gives you variables:
+    # This function is called by multidm-start-seat, which gives you variables:
     #   - $KEYBOARD and $MOUSE, which point to evdev device nodes.
     #   - $SEAT_DISPLAY variable corresponds to the number that the user will
     #     have to press on the keyboard. Might be useful here.

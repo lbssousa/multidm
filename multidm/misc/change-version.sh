@@ -18,8 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-# Run this script from "mdm/mdm", not "mdm/mdm/misc"!
+# Run this script from "multidm/multidm", not "multidm/multidm/misc"!
 
 NEW_VERSION=$1
 
-sed -i "s/MDM_VERSION=.*/MDM_VERSION='$1'/" src/mdm-common
+sed -i "s/MULTIDM_VERSION=.*/MULTIDM_VERSION='$1'/" src/multidm-common

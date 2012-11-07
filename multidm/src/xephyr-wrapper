@@ -18,8 +18,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-MDM_PREFIX=/
-MDM_SCRIPTS=${MDM_PREFIX}/usr/sbin
+MULTIDM_PREFIX=/
+MULTIDM_SCRIPTS=${MULTIDM_PREFIX}/usr/sbin
 
 while (( $# > 0 )); do
     case "$1" in

@@ -20,7 +20,7 @@
 
 set -e
 
-PREFIX=$(grep '^MDM_PREFIX' src/mdm-common | cut -d'=' -f2)
+PREFIX=$(grep '^MULTIDM_PREFIX' src/multidm-common | cut -d'=' -f2)
 
 mkdir -p $PREFIX
 cp -r tree/* $PREFIX

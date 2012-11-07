@@ -11,7 +11,7 @@ This document is just a copy of a 2 pages on the wiki. It follows MediaWiki
 syntax. For the most updated version, see these pages:
 
 - http://wiki.c3sl.ufpr.br/multiseat/index.php/Mdm
-- http://wiki.c3sl.ufpr.br/multiseat/index.php/Compiling_mdm
+- http://wiki.c3sl.ufpr.br/multiseat/index.php/Compiling_multidm
 
 
 ========================
@@ -19,32 +19,32 @@ Multisat Display Manager
 ========================
 
 
-'''mdm''' stands for "multiseat display manager". Despite its name, mdm is actually a wrapper on the real display manager. It is used to configure multiseat environments, allowing users to change a normal machine into a multiseat machine by just installing a package.
+'''multidm''' stands for "multiseat display manager". Despite its name, multidm is actually a wrapper on the real display manager. It is used to configure multiseat environments, allowing users to change a normal machine into a multiseat machine by just installing a package.
 
 ==The problem==
 
-There are many ways to configure multiseat environments. Some people use nested X servers, while others use multiple instances of the X server or maybe VNC or directfb or anything else. Also, combined with these solutions people might want to use GDM, KDM, XDM, remote X without display managers or many others. The goal of the mdm package is to be generic enough to be able to be used in any solution.
+There are many ways to configure multiseat environments. Some people use nested X servers, while others use multiple instances of the X server or maybe VNC or directfb or anything else. Also, combined with these solutions people might want to use GDM, KDM, XDM, remote X without display managers or many others. The goal of the multidm package is to be generic enough to be able to be used in any solution.
 
 ==The solution==
 
-mdm consists of two disctinct parts: the ''core'', simply called mdm, which is the solution-independent code, and the ''multiseat mode'', which is the solution-dependent code. The ''core'' is installed by the mdm package and the other multiseat modes are installed by the other packages (like mdm-xephyr-gdm, which combines Xephyr and GDM). There are also some default modes inside the mdm package, like the xephyr-xdmcp, which just starts X servers connected to remote xdmcp servers. Modes that have extra dependencies are provided by other packages.
+multidm consists of two disctinct parts: the ''core'', simply called multidm, which is the solution-independent code, and the ''multiseat mode'', which is the solution-dependent code. The ''core'' is installed by the multidm package and the other multiseat modes are installed by the other packages (like multidm-xephyr-gdm, which combines Xephyr and GDM). There are also some default modes inside the multidm package, like the xephyr-xdmcp, which just starts X servers connected to remote xdmcp servers. Modes that have extra dependencies are provided by other packages.
 
-===mdm===
+===multidm===
 
 The ''core'' package is responsible for detecting input devices, video cards, creating xorg.conf, associating seats with devices and then calling the modes
 
 ===[[multiseat modes]]===
 
-The modes are actually bash scripts that define some specific functions that are called to start the displays used by the seats. They are usually located in /usr/share/mdm/modes. To change between modes, it is necessary to edit the MULTISEAT_MODE variable inside the [[mdm.conf|mdm configuration file]].
+The modes are actually bash scripts that define some specific functions that are called to start the displays used by the seats. They are usually located in /usr/share/multidm/modes. To change between modes, it is necessary to edit the MULTISEAT_MODE variable inside the [[multidm.conf|multidm configuration file]].
 
-==Using mdm==
+==Using multidm==
 
-There are 3 ways to use mdm. You can:
-* [[Installing mdm|install]] the mdm package from our repositories;
-* [[Compiling mdm|compile]] and install mdm from git
+There are 3 ways to use multidm. You can:
+* [[Installing multidm|install]] the multidm package from our repositories;
+* [[Compiling multidm|compile]] and install multidm from git
 * or download our [[Live-CD]] and boot it in your machine.
 
-You'll have to install the main mdm package, the package for the multiseat mode you want to use and then edit the [[mdm.conf|mdm configuration file]] to use the right mode and change other preferences.
+You'll have to install the main multidm package, the package for the multiseat mode you want to use and then edit the [[multidm.conf|multidm configuration file]] to use the right mode and change other preferences.
 
 
 
@@ -52,7 +52,7 @@ You'll have to install the main mdm package, the package for the multiseat mode 
 COMPILING
 =========
 
-This page contains instructions on how to compile mdm from git.
+This page contains instructions on how to compile multidm from git.
 
 ==Dependencies==
 
@@ -65,25 +65,25 @@ For Debian/Ubuntu users, you can use this command:
 
 To download the repository, use this command:
 
- git-clone http://git.c3sl.ufpr.br/pub/scm/multiseat/mdm.git
+ git-clone http://git.c3sl.ufpr.br/pub/scm/multiseat/multidm.git
 
-It will create a directory called ''mdm''. Change to it:
+It will create a directory called ''multidm''. Change to it:
 
- cd mdm
+ cd multidm
 
 ==Compiling==
 
 Our repository consists of 3 main parts:
 
-* The ''mdm'' directory, which generates the package called mdm
+* The ''multidm'' directory, which generates the package called multidm
 * The ''extra-modes'' directory, which includes the non-default [[multiseat modes]]
-* The '''dependencies''' directory, which includes a patch for libx11. This patch is needed because without it Xephyr will keep randomly dying. You ''can'' use mdm without it, but as soon as your sessions start dying, you'll want this patch. If you don't use Xephyr, you don't need this patch. The patch fixes [https://bugs.freedesktop.org/show_bug.cgi?id=6820 freedesktop.org's bug #6820]
+* The '''dependencies''' directory, which includes a patch for libx11. This patch is needed because without it Xephyr will keep randomly dying. You ''can'' use multidm without it, but as soon as your sessions start dying, you'll want this patch. If you don't use Xephyr, you don't need this patch. The patch fixes [https://bugs.freedesktop.org/show_bug.cgi?id=6820 freedesktop.org's bug #6820]
 
-====Compiling mdm====
+====Compiling multidm====
 
-Change to the mdm sub-directory
+Change to the multidm sub-directory
 
- cd mdm
+ cd multidm
 
 Compile the source code
 
@@ -101,7 +101,7 @@ Go back to main directory
 
  cd ..
 
-This way will allow you to use mdm through XDMCP.
+This way will allow you to use multidm through XDMCP.
 
 ====Compiling the xephyr-gdm mode====
 
@@ -144,15 +144,15 @@ It will download the sources, apply the patches, and put the libx11-6 package in
 
 ==Configuring the package==
 
-To configure it, edit [[mdm.conf]].
+To configure it, edit [[multidm.conf]].
 
- sudo vim /etc/mdm/mdm.conf
+ sudo vim /etc/multidm/multidm.conf
 
 Adjust your monitor mode, frequency, keyboard layout and multiseat mode (use ''xephyr-gdm'' if you want gdm).
 
 ==Running==
 
-mdm is configured to automatically start whenever your computer boots. You can either reboot or:
+multidm is configured to automatically start whenever your computer boots. You can either reboot or:
 
- sudo /etc/init.d/mdm start
+ sudo /etc/init.d/multidm start
 

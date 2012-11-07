@@ -30,7 +30,7 @@ SCREEN_X_ORIGIN=
 SCREEN_SIZES=
 SCREEN_AMOUNT=
 OUTPUT_NAMES=
-XRANDR_INFO_FILE=${MDM_ETC}/xrandr.info
+XRANDR_INFO_FILE=${MULTIDM_ETC}/xrandr.info
 
 # This function configures the screen layout
 function xrandr_configure_layout () {

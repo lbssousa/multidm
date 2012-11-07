@@ -3,13 +3,13 @@
 # If DESTDIR wasn't set, set it now as /
 export DESTDIR ?= /
 all:
-	cd mdm && make
+	cd multidm && make
 	cd extra-modes/xephyr-gdm && make
 
 install:
-	cd mdm && make install
+	cd multidm && make install
 	cd extra-modes/xephyr-gdm && make install
 
 clean:
-	cd mdm && make clean
+	cd multidm && make clean
 	cd extra-modes/xephyr-gdm && make clean

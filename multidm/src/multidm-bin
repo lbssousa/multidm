@@ -18,35 +18,35 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-# This is the script that is called by init.d/mdm, it is the one that actually
+# This is the script that is called by init.d/multidm, it is the one that actually
 # starts the "hard work".
 
 # Do this first:
-MDM_PREFIX=/
-MDM_SCRIPTS=${MDM_PREFIX}/usr/sbin
-MDM_INCLUDE=${MDM_SCRIPTS}/mdm-common
-source $MDM_INCLUDE
+MULTIDM_PREFIX=/
+MULTIDM_SCRIPTS=${MULTIDM_PREFIX}/usr/sbin
+MULTIDM_INCLUDE=${MULTIDM_SCRIPTS}/multidm-common
+source $MULTIDM_INCLUDE
 
-MY_LOG=${MDM_LOGS}/mdm.log
-MY_PIDFILE=${MDM_PIDS}/mdm.pid
+MY_LOG=${MULTIDM_LOGS}/multidm.log
+MY_PIDFILE=${MULTIDM_PIDS}/multidm.pid
 
-CREATE_XORG_CONF=${MDM_SCRIPTS}/create-xorg-conf
-START_SEAT=${MDM_SCRIPTS}/mdm-start-seat
-START_MONOSEAT=${MDM_SCRIPTS}/mdm-start-monoseat
+CREATE_XORG_CONF=${MULTIDM_SCRIPTS}/create-xorg-conf
+START_SEAT=${MULTIDM_SCRIPTS}/multidm-start-seat
+START_MONOSEAT=${MULTIDM_SCRIPTS}/multidm-start-monoseat
 
 function exec_start() {
 
-    log --log-file-only "Multiseat Display Manager version $MDM_VERSION"
+    log --log-file-only "Multiseat Display Manager version $MULTIDM_VERSION"
     log --log-file-only "Today is $(date)."
 
-    if ([ "$RECREATE_XORG_CONF" = 'yes' ] || [ ! -f "$MDM_XORG_CONF" ]); then
+    if ([ "$RECREATE_XORG_CONF" = 'yes' ] || [ ! -f "$MULTIDM_XORG_CONF" ]); then
 	$CREATE_XORG_CONF
     fi
 
     if [ "$RECONFIGURE_INPUT" = 'yes' ]; then
 	# Removing links AND locks
-	for i in `ls $MDM_DEVICES`; do
-	    rm -f $MDM_DEVICES/$i
+	for i in `ls $MULTIDM_DEVICES`; do
+	    rm -f $MULTIDM_DEVICES/$i
 	done
     fi
 
@@ -77,10 +77,10 @@ function exec_start() {
 
     if [ "$SEATS" = "1" ] || [ "$USE_MONOSEAT" = 'yes' ] ; then
         log --log-file-only "Not using multiseat"
-        rotate_log ${MDM_LOGS}/mdm-monoseat.log
-        $START_MONOSEAT &> ${MDM_LOGS}/mdm-monoseat.log &
+        rotate_log ${MULTIDM_LOGS}/multidm-monoseat.log
+        $START_MONOSEAT &> ${MULTIDM_LOGS}/multidm-monoseat.log &
         PID=$!
-        echo $PID > $MDM_PIDS/mdm-start-monoseat.pid
+        echo $PID > $MULTIDM_PIDS/multidm-start-monoseat.pid
 
     else
 	display_manager_start_underneath_xserver >> $MY_LOG 2>&1
@@ -101,13 +101,13 @@ function exec_start() {
 	    # - the first is the video card number
 	    # - the second is the seat display
 	    for (( seat=0; seat < "${SEATS_ON_CARD[i]}"; seat++ )); do
-		START_SEAT_LOG="${MDM_LOGS}/mdm-start-seat.${SEAT_DISPLAY}.log"
+		START_SEAT_LOG="${MULTIDM_LOGS}/multidm-start-seat.${SEAT_DISPLAY}.log"
 		rotate_log ${START_SEAT_LOG}
 
 		log --log-file-only "Starting seat $((i+1)) ${SEAT_DISPLAY}"
 		${START_SEAT} $((i+1)) $SEAT_DISPLAY &> $START_SEAT_LOG &
 		PID=$!
-		echo $PID > ${MDM_PIDS}/start-seat.${SEAT_DISPLAY}.pid
+		echo $PID > ${MULTIDM_PIDS}/start-seat.${SEAT_DISPLAY}.pid
 		((SEAT_DISPLAY++))
 	    done
 	done
@@ -116,10 +116,10 @@ function exec_start() {
 
 function exec_stop() {
 
-    log --log-file-only "Stopping mdm..."
+    log --log-file-only "Stopping multidm..."
     display_manager_stop
 
-    for i in $(ls $MDM_PIDS/*.pid 2> /dev/null | grep -v mdm.pid); do
+    for i in $(ls $MULTIDM_PIDS/*.pid 2> /dev/null | grep -v multidm.pid); do
 	rkill $(cat $i) 2> /dev/null
 	rm -f $i
     done
@@ -131,7 +131,7 @@ function exec_stop() {
 function run_service() {
 
     # /var/run is re-created at every reboot
-    mkdir -p ${MDM_RUN}
+    mkdir -p ${MULTIDM_RUN}
 
     echo $$ > $MY_PIDFILE
 
@@ -153,10 +153,10 @@ function print_help() {
     echo "$0 usage:"
     echo "    $0 [options]"
     echo "where options include:"
-    echo "    --reconfigure   starts mdm recreating xorg.conf.mdm and"
+    echo "    --reconfigure   starts multidm recreating xorg.conf.multidm and"
     echo "                    reconfiguring input, overwriting values"
-    echo "                    in mdm.conf"
-    echo "    --version       prints mdm's version"
+    echo "                    in multidm.conf"
+    echo "    --version       prints multidm's version"
     echo "    --help          prints this message"
 }
 
@@ -177,13 +177,13 @@ while (( $# > 0 )); do
 	    shift 1
 	    ;;
         --reconfigure)
-            # overwrite what's written in mdm.conf:
+            # overwrite what's written in multidm.conf:
             RECREATE_XORG_CONF='yes'
             RECONFIGURE_INPUT='yes'
 	    shift 1
             ;;
         --version)
-            echo "$MDM_VERSION"
+            echo "$MULTIDM_VERSION"
             exit 0
             ;;
         --help)
@@ -205,7 +205,7 @@ if [ "$RUNNING_AS_DAEMON" = "1" ]; then
     cd /
     umask 0
 
-    log --log-file-only "mdm daemon started"
+    log --log-file-only "multidm daemon started"
 
     run_service
     exit $?
@@ -214,7 +214,7 @@ else
     # Don't rotate log after becomming a daemon
     rotate_log $MY_LOG
 
-    log --log-file-only "Starting mdm daemon..."
+    log --log-file-only "Starting multidm daemon..."
 
     # Forking, dettaching, closing outputs, etc
     setsid nohup $0 --daemon $@ &> /dev/null & # Run setsid or nohup first?

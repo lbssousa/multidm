@@ -22,8 +22,8 @@
 
 # TODO: use XAUTHORITY correctly, we MUST have a secure environment
 
-XAUTH_FILE=${MDM_RUN}/Xauth
-XEPHYR_WRAPPER=${MDM_SCRIPTS}/xephyr-wrapper
+XAUTH_FILE=${MULTIDM_RUN}/Xauth
+XEPHYR_WRAPPER=${MULTIDM_SCRIPTS}/xephyr-wrapper
 
 function display_manager_init () {
     # This function should stop running processes, remove logs, links, locks, or
@@ -41,13 +41,13 @@ function display_manager_start_monoseat () {
     # Do NOT configure devices or stuff like that
     # We assume $DISPLAY is already set here.
     while true; do
-        X -config $MDM_XORG_CONF			\
+        X -config $MULTIDM_XORG_CONF			\
           -${CONNECTION_TYPE} ${CONNECTION_TARGET} 2>&1 &
 
         PID=$!
-        echo $PID > $MDM_PIDS/xephyr-xdmcp-X.pid
+        echo $PID > $MULTIDM_PIDS/xephyr-xdmcp-X.pid
         wait $PID
-        rm -f $MDM_PIDS/xephyr-xdmcp-X.pid
+        rm -f $MULTIDM_PIDS/xephyr-xdmcp-X.pid
     done
 
     return 0
@@ -60,9 +60,9 @@ function display_manager_start_underneath_xserver () {
     # We assume $DISPLAY is already set here.
 
     # Without -noreset the configuration process doesn't work properly
-    X -noreset -config $MDM_XORG_CONF 2>&1 &
+    X -noreset -config $MULTIDM_XORG_CONF 2>&1 &
     PID=$!
-    echo $PID > $MDM_PIDS/xephyr-xdmcp-X.pid
+    echo $PID > $MULTIDM_PIDS/xephyr-xdmcp-X.pid
 
     # XXX Wait for sigusr1, that X will send when it gets ready
     sleep 5
@@ -77,7 +77,7 @@ function display_manager_start_seat () {
     # In case of multiseat with Xephyr, this function starts the Xephyrs and
     # puts the login screens on them.
     # We assume $DISPLAY is already set here.
-    # This function is called by mdm-start-seat, which gives you variables:
+    # This function is called by multidm-start-seat, which gives you variables:
     #   - $KEYBOARD and $MOUSE, which point to evdev device nodes.
     #   - $SEAT_DISPLAY variable corresponds to the number that the user will
     #     have to press on the keyboard. Might be useful here.
@@ -104,16 +104,16 @@ function display_manager_start_seat () {
             -dpi $DPI_VALUE 2>&1 &
 
     PID=$!
-    echo $PID > $MDM_PIDS/Xephyr.${SEAT_DISPLAY}.pid
+    echo $PID > $MULTIDM_PIDS/Xephyr.${SEAT_DISPLAY}.pid
     wait $PID
-    rm -f $MDM_PIDS/xephyr-xdmcp-Xephyr.${SEAT_DISPLAY}.pid
+    rm -f $MULTIDM_PIDS/xephyr-xdmcp-Xephyr.${SEAT_DISPLAY}.pid
 }
 
 function display_manager_stop () {
     # This function should kill everything it has to kill, so that we REALLY
     # stop all the seats, kill all the Xephyrs, remove locks, links and stuff
     # like that.
-    for i in `ls $MDM_PIDS/xephyr-xdmcp*.pid 2> /dev/null`; do
+    for i in `ls $MULTIDM_PIDS/xephyr-xdmcp*.pid 2> /dev/null`; do
 	kill `cat $i` 2> /dev/null
 	rm -f $i
     done

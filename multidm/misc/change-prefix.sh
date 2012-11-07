@@ -20,7 +20,7 @@
 
 NEW_PREFIX=$1
 
-for i in `grep -R -I '^MDM_PREFIX=.*$' * | cut -d':' -f1`; do
-    sed -i "s%^MDM_PREFIX=.*$%MDM_PREFIX=${NEW_PREFIX}%g" $i
+for i in `grep -R -I '^MULTIDM_PREFIX=.*$' * | cut -d':' -f1`; do
+    sed -i "s%^MULTIDM_PREFIX=.*$%MULTIDM_PREFIX=${NEW_PREFIX}%g" $i
 
 done

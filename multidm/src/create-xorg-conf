@@ -23,10 +23,10 @@
 # But they are not enough, so we have to do this...
 # I hope someday X will by default open multiple screens without xorg.conf
 
-MDM_PREFIX=/
-MDM_SCRIPTS=${MDM_PREFIX}/usr/sbin
-MDM_INCLUDE=${MDM_SCRIPTS}/mdm-common
-source $MDM_INCLUDE
+MULTIDM_PREFIX=/
+MULTIDM_SCRIPTS=${MULTIDM_PREFIX}/usr/sbin
+MULTIDM_INCLUDE=${MULTIDM_SCRIPTS}/multidm-common
+source $MULTIDM_INCLUDE
 
 function section_files () {
 echo '
@@ -41,7 +41,7 @@ Section "Files"
         FontPath     "/usr/share/fonts/X11/100dpi"
         FontPath     "/usr/share/fonts/X11/75dpi"
         FontPath     "/var/lib/defoma/x-ttcidfont-conf.d/dirs/TrueType"
-EndSection' >> $MDM_XORG_CONF
+EndSection' >> $MULTIDM_XORG_CONF
 }
 
 function section_module () {
@@ -54,7 +54,7 @@ Section "Module"
         Load  "glx"
         Load  "dri"
         Load  "xtrap"
-EndSection' >> $MDM_XORG_CONF
+EndSection' >> $MULTIDM_XORG_CONF
 }
 
 function section_server_flags () {
@@ -68,14 +68,14 @@ Section "ServerFlags"
     # Option    "StandbyTime"  "0"
     # Option    "SuspendTime"  "0"
     # Option    "OffTime"      "0"
-EndSection' >> $MDM_XORG_CONF
+EndSection' >> $MULTIDM_XORG_CONF
 }
 
 function section_dri () {
 echo '
 Section "DRI"
     Mode    0666
-EndSection' >> $MDM_XORG_CONF
+EndSection' >> $MULTIDM_XORG_CONF
 }
 
 function input_devices_sections () {
@@ -104,7 +104,7 @@ Section \"InputDevice\"
 	#Option      \"XkbRules\"  \"$MY_XKB_RULES\"
 	Option      \"XkbModel\"  \"$MY_XKB_MODEL\"
 	Option      \"XkbLayout\" \"$MY_XKB_LAYOUT\"
-EndSection " >> $MDM_XORG_CONF
+EndSection " >> $MULTIDM_XORG_CONF
 
 echo '
 Section "InputDevice"
@@ -114,7 +114,7 @@ Section "InputDevice"
         Option      "Protocol" "auto"
         Option      "Device" "/dev/input/mice"
         Option      "ZAxisMapping" "4 5 6 7"
-EndSection' >> $MDM_XORG_CONF
+EndSection' >> $MULTIDM_XORG_CONF
 }
 
 function video_sections () {
@@ -189,47 +189,47 @@ Section \"Screen\"
 	DefaultDepth	24
 	SubSection	\"Display\"
 		Depth	16
-		Modes	\"${SCREEN_SIZE}\"" >> $MDM_XORG_CONF
+		Modes	\"${SCREEN_SIZE}\"" >> $MULTIDM_XORG_CONF
 # Testing if we really need a VIRTUAL SIZE for Screen
 if [[ $VIRTUAL_X > ${SCREEN_SIZE/x*/} ]]; then
-        echo -e "\tVirtual $VIRTUAL_X $VIRTUAL_Y" >> $MDM_XORG_CONF
+        echo -e "\tVirtual $VIRTUAL_X $VIRTUAL_Y" >> $MULTIDM_XORG_CONF
 fi
 
 echo -e "
 	EndSubSection
 	SubSection	\"Display\"
 		Depth	24
-		Modes	\"${SCREEN_SIZE}\"" >> $MDM_XORG_CONF
+		Modes	\"${SCREEN_SIZE}\"" >> $MULTIDM_XORG_CONF
 # Testing if we really need a VIRTUAL SIZE for Screen
 if [[ $VIRTUAL_X > ${SCREEN_SIZE/x*/} ]]; then
-        echo -e "\tVirtual  $VIRTUAL_X $VIRTUAL_Y" >> $MDM_XORG_CONF
+        echo -e "\tVirtual  $VIRTUAL_X $VIRTUAL_Y" >> $MULTIDM_XORG_CONF
 fi
 
 echo -e "
 	EndSubSection
-EndSection" >> $MDM_XORG_CONF
+EndSection" >> $MULTIDM_XORG_CONF
 }
 
 function section_server_layout () {
 echo "
 Section \"ServerLayout\"
 	Identifier    \"X Configured\"
-" >> $MDM_XORG_CONF
+" >> $MULTIDM_XORG_CONF
 
 for (( i=1; i <= $N_CARDS; i++ )); do
-	echo "	Screen $((i-1)) \"Screen $i\"" >> $MDM_XORG_CONF
+	echo "	Screen $((i-1)) \"Screen $i\"" >> $MULTIDM_XORG_CONF
 done
 
 echo '
 	InputDevice    "Keyboard"
 	InputDevice    "Mouse"
-EndSection' >> $MDM_XORG_CONF
+EndSection' >> $MULTIDM_XORG_CONF
 }
 
 function generate_xrandr_info_file () {
 
     # We need X running to use xrandr, so:
-    X -config $MDM_XORG_CONF -noreset &>/dev/null &
+    X -config $MULTIDM_XORG_CONF -noreset &>/dev/null &
     local PID=$!
     sleep 5
 
@@ -262,14 +262,14 @@ DRIVERS=($($DISCOVER_DEVICES driver | cut -f2))
 BUS_IDS=($($DISCOVER_DEVICES bus | cut -f2))
 
 # They called our script, so they DO want a new xorg.conf
-rm -f $MDM_XORG_CONF
+rm -f $MULTIDM_XORG_CONF
 rm -f $XRANDR_INFO_FILE
 create_xorg_conf_file
 
-# After xorg.conf.mdm is ready, generate xrandr.info file
+# After xorg.conf.multidm is ready, generate xrandr.info file
 generate_xrandr_info_file
 
 # And recreate xorg.conf, based on information given by xrandr.info file
-rm -f $MDM_XORG_CONF
+rm -f $MULTIDM_XORG_CONF
 create_xorg_conf_file
 
