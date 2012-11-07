@@ -4,12 +4,12 @@
 export DESTDIR ?= /
 all:
 	cd multidm && make
-	cd extra-modes/xephyr-gdm && make
+	cd extra-modes/xephyr-mdm && make
 
 install:
 	cd multidm && make install
-	cd extra-modes/xephyr-gdm && make install
+	cd extra-modes/xephyr-mdm && make install
 
 clean:
 	cd multidm && make clean
-	cd extra-modes/xephyr-gdm && make clean
+	cd extra-modes/xephyr-mdm && make clean

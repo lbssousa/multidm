@@ -23,11 +23,11 @@ Multisat Display Manager
 
 ==The problem==
 
-There are many ways to configure multiseat environments. Some people use nested X servers, while others use multiple instances of the X server or maybe VNC or directfb or anything else. Also, combined with these solutions people might want to use GDM, KDM, XDM, remote X without display managers or many others. The goal of the multidm package is to be generic enough to be able to be used in any solution.
+There are many ways to configure multiseat environments. Some people use nested X servers, while others use multiple instances of the X server or maybe VNC or directfb or anything else. Also, combined with these solutions people might want to use MDM, KDM, XDM, remote X without display managers or many others. The goal of the multidm package is to be generic enough to be able to be used in any solution.
 
 ==The solution==
 
-multidm consists of two disctinct parts: the ''core'', simply called multidm, which is the solution-independent code, and the ''multiseat mode'', which is the solution-dependent code. The ''core'' is installed by the multidm package and the other multiseat modes are installed by the other packages (like multidm-xephyr-gdm, which combines Xephyr and GDM). There are also some default modes inside the multidm package, like the xephyr-xdmcp, which just starts X servers connected to remote xdmcp servers. Modes that have extra dependencies are provided by other packages.
+multidm consists of two disctinct parts: the ''core'', simply called multidm, which is the solution-independent code, and the ''multiseat mode'', which is the solution-dependent code. The ''core'' is installed by the multidm package and the other multiseat modes are installed by the other packages (like multidm-xephyr-mdm, which combines Xephyr and MDM). There are also some default modes inside the multidm package, like the xephyr-xdmcp, which just starts X servers connected to remote xdmcp servers. Modes that have extra dependencies are provided by other packages.
 
 ===multidm===
 
@@ -103,11 +103,11 @@ Go back to main directory
 
 This way will allow you to use multidm through XDMCP.
 
-====Compiling the xephyr-gdm mode====
+====Compiling the xephyr-mdm mode====
 
-Change to the xephyr-gdm directory:
+Change to the xephyr-mdm directory:
 
- cd extra-modes/xephyr-gdm
+ cd extra-modes/xephyr-mdm
 
 Generate the package
 
@@ -148,7 +148,7 @@ To configure it, edit [[multidm.conf]].
 
  sudo vim /etc/multidm/multidm.conf
 
-Adjust your monitor mode, frequency, keyboard layout and multiseat mode (use ''xephyr-gdm'' if you want gdm).
+Adjust your monitor mode, frequency, keyboard layout and multiseat mode (use ''xephyr-mdm'' if you want mdm).
 
 ==Running==
 

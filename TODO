@@ -44,9 +44,9 @@ Medium/hard tasks:
 - Fix all warnings from debian's lintian check
 - Write manpages
 - Remove all the unnecessary 'sleeps', wait things the right way
-- In xephyr-gdm mode, if you repeatedly kill Xephyr, GDM gives us an error
+- In xephyr-mdm mode, if you repeatedly kill Xephyr, MDM gives us an error
   message (not the blue screen). Investigate this.
-- Find a way to reconfigure input devices in the xephyr-gdm mode
+- Find a way to reconfigure input devices in the xephyr-mdm mode
 - Create a mode that uses VNC
 - Fix the documentation and wiki!
 - Find a better way to discover video cards and their drivers

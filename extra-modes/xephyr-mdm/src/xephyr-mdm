@@ -18,16 +18,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-# This configuration runs Xephyr on gdm, using gdmdynamic
+# This configuration runs Xephyr on mdm, using mdmdynamic
 
 XEPHYR_WRAPPER=${MULTIDM_SCRIPTS}/xephyr-wrapper
 
 RETRIES=2
 SLEEP=1
-GDMDYNAMIC="gdmdynamic -t $RETRIES -s $SLEEP"
-GDM_SOCKET='/var/run/gdm_socket'
+MDMDYNAMIC="mdmdynamic -t $RETRIES -s $SLEEP"
+MDM_SOCKET='/var/run/mdm_socket'
 
-export XAUTHORITY='/var/lib/gdm/:0.Xauth'
+export XAUTHORITY='/var/lib/mdm/:0.Xauth'
 
 function display_manager_init () {
     # This function should stop running processes, remove logs, links, locks, or
@@ -38,8 +38,8 @@ function display_manager_init () {
     # No problem if it's already running...
     display_manager_stop
 
-    if [ ! -e $GDM_SOCKET ]; then
-       log --log-file-only "Error: gdm is not running"
+    if [ ! -e $MDM_SOCKET ]; then
+       log --log-file-only "Error: mdm is not running"
        return 1
     fi
 
@@ -52,10 +52,10 @@ function display_manager_start_monoseat () {
     # Do NOT configure devices or stuff like that
     # We assume $DISPLAY is already set here.
 
-    $GDMDYNAMIC -a 0=XHandled
-    $GDMDYNAMIC -r 0
+    $MDMDYNAMIC -a 0=XHandled
+    $MDMDYNAMIC -r 0
 
-    echo "Exiting (gdm will handle the X server for us)."
+    echo "Exiting (mdm will handle the X server for us)."
     return 0
 }
 
@@ -65,8 +65,8 @@ function display_manager_start_underneath_xserver () {
     # Don't put login screen on this server!
     # We assume $DISPLAY is already set here.
 
-    $GDMDYNAMIC -a 0=XNotHandled
-    $GDMDYNAMIC -r 0
+    $MDMDYNAMIC -a 0=XNotHandled
+    $MDMDYNAMIC -r 0
     # XXX: find a better way to wait for X to start
     sleep 5
 
@@ -96,7 +96,7 @@ function display_manager_start_seat () {
     echo "       -${CONNECTION_TYPE} ${CONNECTION_TARGET}"
     echo "       -dpi $DPI_VALUE  2>&1 &"
 
-    $GDMDYNAMIC "-a ${SEAT_DISPLAY}=${XEPHYR_WRAPPER} -br :${SEAT_DISPLAY}   \
+    $MDMDYNAMIC "-a ${SEAT_DISPLAY}=${XEPHYR_WRAPPER} -br :${SEAT_DISPLAY}   \
     	      -display $DISPLAY						   \
 	      -xauthority $XAUTHORITY					   \
     	      -parent $SEAT_WINDOW_ID	   			           \
@@ -104,12 +104,12 @@ function display_manager_start_seat () {
 	      -keybd							   \
 	evdev,,device=$KEYBOARD,xkbmodel=$MY_XKB_MODEL,xkblayout=$MY_XKB_LAYOUT \
               -dpi $DPI_VALUE"
-    $GDMDYNAMIC -r ${SEAT_DISPLAY}
+    $MDMDYNAMIC -r ${SEAT_DISPLAY}
 
-    # XXX: We're letting gdm do everything: it will restart Xephyr whenever it
+    # XXX: We're letting mdm do everything: it will restart Xephyr whenever it
     # dies, it will do a lot of stuff. This way, we won't be able to reconfigure
-    # input. We need to find a way to do this, maybe through gdm itself.
-    echo "Exiting (gdm will handle the Xephyrs for us)."
+    # input. We need to find a way to do this, maybe through mdm itself.
+    echo "Exiting (mdm will handle the Xephyrs for us)."
     exit 0
 }
 
@@ -118,10 +118,10 @@ function display_manager_stop () {
     # stop all the seats, kill all the Xephyrs, remove locks, links and stuff
     # like that.
 
-    if [ -e "$GDM_SOCKET" ]; then
-	SERVERS=($(gdmdynamic -l | tr ';' '\n'| cut -d':' -f2 | cut -d',' -f1))
+    if [ -e "$MDM_SOCKET" ]; then
+	SERVERS=($(mdmdynamic -l | tr ';' '\n'| cut -d':' -f2 | cut -d',' -f1))
 	for i in ${SERVERS[@]}; do
-	    $GDMDYNAMIC -d $i
+	    $MDMDYNAMIC -d $i
 	done
     fi
 }

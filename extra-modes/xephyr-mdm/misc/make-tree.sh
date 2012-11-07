@@ -29,7 +29,7 @@ MULTIDM_SHARE=$BASE_DIR/usr/share/multidm/
 
 MULTIDM_MODES=$MULTIDM_SHARE/modes/
 
-GDM_CONF=/etc/gdm/
+MDM_CONF=/etc/mdm/
 
 rm -rf   $TARGET
 mkdir -p $TARGET
@@ -38,10 +38,10 @@ mkdir -p $TARGET/$MULTIDM_SHARE
 
 mkdir -p $TARGET/$MULTIDM_MODES
 
-mkdir -p $TARGET/$GDM_CONF
+mkdir -p $TARGET/$MDM_CONF
 
-cp src/xephyr-gdm		    $TARGET/$MULTIDM_MODES/
+cp src/xephyr-mdm		    $TARGET/$MULTIDM_MODES/
 
 # Yes, 2 files.
-cp gdm-config/gdm.conf-custom	$TARGET/$GDM_CONF/
-cp gdm-config/gdm.conf-custom	$TARGET/$GDM_CONF/gdm.conf
+cp mdm-config/mdm.conf-custom	$TARGET/$MDM_CONF/
+cp mdm-config/mdm.conf-custom	$TARGET/$MDM_CONF/mdm.conf
